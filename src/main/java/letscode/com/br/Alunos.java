@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 
 public class Alunos {
-    private Double numero;
+    private Integer numero;
     private String nome;
     private String turma;
 
