@@ -1,8 +1,10 @@
 package letscode.com.br;
 
 import letscode.com.br.Alunos.OrdenaPorNome;
+import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -73,7 +75,7 @@ public class TurmasAlunos {
 
         escreverArquivo(alunos, outputPath);
         escreverArquivo(alunos2, outputPath2);
-        //escreverArquivo((List<Alunos>) totalAlunos, outputPath3);
+        escreverArquivoTodosAlunos((SortedSet<Alunos>) totalAlunos, outputPath3);
 
     }
 
@@ -110,6 +112,21 @@ public class TurmasAlunos {
             e.printStackTrace();
         }
         return TurmaBancoDados;
+    }
+
+    private static void escreverArquivoTodosAlunos(SortedSet<Alunos> totalAluno, String outputPath3){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath3))) {
+            totalAluno.forEach( item -> {
+                        try {
+                            writer.append(item + "\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
