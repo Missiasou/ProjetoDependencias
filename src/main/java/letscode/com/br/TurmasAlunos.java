@@ -1,11 +1,13 @@
 package letscode.com.br;
 
+import letscode.com.br.Alunos.OrdenaPorNome;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class TurmasAlunos {
-
     public static void main(String[] args){
 
         String inputPath = "docs/TurmaBancoDados.csv";
@@ -13,6 +15,7 @@ public class TurmasAlunos {
 
         String outputPath = "docs/TurmasBancoDadosSaida.txt";
         String outputPath2 = "docs/TurmaJavaSaida.txt";
+        String outputPath3 = "docs/TotalAlunos.txt";
 
 
         LinkedHashSet<String> TurmaBancoDados = lerArquivo(inputPath);
@@ -24,17 +27,17 @@ public class TurmasAlunos {
             List<String> atrib = Arrays.stream(line.split(";")).collect(Collectors.toList());
 
             alunos.add(Alunos.builder()
-                   .numero(Integer.valueOf(atrib.get(0)))
-                   .nome(atrib.get(1))
-                   .turma(atrib.get(2))
+                    .nome(atrib.get(0))
+                    .turma(atrib.get(1))
                     .build()
            );
-
         }
 
+        Collections.sort(alunos, new OrdenaPorNome());
+        System.out.println("-----Turma Banco de Dados------");
         alunos.forEach(System.out::println);
         System.out.printf("O Total de Alunos é: %s %n", alunos.size());
-        System.out.println("--------------------");
+        System.out.println("");
 
         LinkedHashSet<String> TurmaJava = lerArquivo(inputPath2);
         TurmaJava.remove(TurmaJava.stream().findFirst().get());
@@ -44,34 +47,33 @@ public class TurmasAlunos {
             List<String> atrib2 = Arrays.stream(line.split(";")).collect(Collectors.toList());
 
             alunos2.add(Alunos.builder()
-                    .numero(Integer.valueOf(atrib2.get(0)))
-                    .nome(atrib2.get(1))
-                    .turma(atrib2.get(2))
+                    .nome(atrib2.get(0))
+                    .turma(atrib2.get(1))
                     .build()
             );
-
         }
 
+        Collections.sort(alunos2, new OrdenaPorNome());
+        System.out.println("-----Turma Java------");
         alunos2.forEach(System.out::println);
         System.out.printf("O Total de Alunos é: %s %n", alunos2.size());
 
 
-        List<Alunos> totalAlunos = new ArrayList<>();
 
-
+        SortedSet<Alunos> totalAlunos = new TreeSet<>();
         totalAlunos.addAll(alunos);
         totalAlunos.addAll(alunos2);
 
-        System.out.println("---------------");
-        System.out.println("---------------");
+
+        System.out.println("");
+        System.out.println("-------Total de Alunos--------");
         totalAlunos.forEach(System.out::println);
         System.out.printf("O Total de Alunos é: %s %n", totalAlunos.size());
 
 
-
-
         escreverArquivo(alunos, outputPath);
         escreverArquivo(alunos2, outputPath2);
+        //escreverArquivo((List<Alunos>) totalAlunos, outputPath3);
 
     }
 
